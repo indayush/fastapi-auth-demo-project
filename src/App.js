@@ -1,10 +1,8 @@
 import './App.css';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const BASE_URL = "http://127.0.0.1:8000"
-
-
 
 function App() {
 
@@ -16,6 +14,28 @@ function App() {
   const [authTokenType, setAuthTokenType] = useState(null);
   const [userId, setUserId] = useState('');
 
+  useEffect(() => {
+    setAuthToken(window.localStorage.getItem('authToken'));
+    setAuthTokenType(window.localStorage.getItem('authTokenType'))
+    setUsername(window.localStorage.getItem('username'))
+    setUserId(window.localStorage.getItem('userId'))
+  }, [])
+
+  useEffect(() => {
+    authToken
+      ? window.localStorage.setItem('authToken', authToken)
+      : window.localStorage.removeItem('authToken')
+    authTokenType
+      ? window.localStorage.setItem('authTokenType', authTokenType)
+      : window.localStorage.removeItem('authTokenType')
+    username
+      ? window.localStorage.setItem('username', username)
+      : window.localStorage.removeItem('username')
+    userId
+      ? window.localStorage.setItem('userId', userId)
+      : window.localStorage.removeItem('userId')
+
+  }, [authToken, authTokenType, userId, username])
 
   function userLogin(event) {
     event?.preventDefault();
@@ -55,7 +75,6 @@ function App() {
       })
 
   }
-
 
   function userSignUp(event) {
     event?.preventDefault();
@@ -97,6 +116,27 @@ function App() {
         alert(error);
       })
   }
+
+
+  function performAction(event) {
+    event?.preventDefault();
+
+    fetch(BASE_URL + '/api/v1/users/')
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw response
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error)
+      })
+  }
+
 
   return (
     <div className="App">
@@ -152,7 +192,6 @@ function App() {
             required
           />
 
-
           <label for="password">Password*</label>
           <input
             type="text"
@@ -172,13 +211,17 @@ function App() {
             Login
           </button>
 
-
           <button
             onClick={(e) => userSignUp(e)}
           >
             Sign Up
           </button>
 
+          <button
+            onClick={(e) => performAction(e)}
+          >
+            Signed In Activity
+          </button>
 
         </form>
       </fieldset>
