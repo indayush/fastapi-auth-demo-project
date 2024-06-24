@@ -1,5 +1,5 @@
 import './App.css';
-
+import Cookies from 'universal-cookie';
 import { useState, useEffect } from "react";
 
 const BASE_URL = "http://127.0.0.1:8000"
@@ -24,39 +24,39 @@ function App() {
   // }, [])
 
   useEffect(() => {
-    authToken
-      ? window.localStorage.setItem('authToken', authToken)
-      // ? console.log("authToken - " + authToken)
-      // : window.localStorage.removeItem('authToken')
-      : console.log("authToken - " + authToken)
+    const cookies = new Cookies();
 
+    if (authToken != null) {
+      window.localStorage.setItem('authToken', authToken)
+      cookies.set('authToken', authToken)
+    } else {
+      // window.localStorage.removeItem('authToken')
+      console.log("authToken - " + authToken)
+    }
 
-    authTokenType
-      ? window.localStorage.setItem('authTokenType', authTokenType)
-      // ? console.log("authTokenType - " + authTokenType)
-      // : window.localStorage.removeItem('authTokenType')
-      : console.log("authTokenType - " + authTokenType)
+    if (authTokenType != null) {
+      window.localStorage.setItem('authTokenType', authTokenType)
+      cookies.set('authTokenType', authTokenType)
+    } else {
+      // window.localStorage.removeItem('authTokenType')
+      console.log("authTokenType - " + authTokenType)
+    }
 
-    username
-      ? window.localStorage.setItem('username', username)
-      // ? console.log("username - " + username)
-      // : window.localStorage.removeItem('username')
-      : console.log("username - " + username)
+    if (username != null) {
+      window.localStorage.setItem('username', username)
+      cookies.set('username', username)
+    } else {
+      // window.localStorage.removeItem('username')
+      console.log("username - " + username)
+    }
 
-    // userId
-    //   ? window.localStorage.setItem('userId', userId)
-    //   // ? console.log("userId - " + userId)
-    //   // : window.localStorage.removeItem('userId')
-    //   : console.log("userId - " + userId)
-
-      if (userId != null){
-        window.localStorage.setItem('userId', userId)
-        
-        console.log("userId - " + userId)
-      }else{
-        // window.localStorage.removeItem('userId')
-        console.log("userId - " + userId)
-      }
+    if (userId != null) {
+      window.localStorage.setItem('userId', userId)
+      cookies.set('userId', userId)
+    } else {
+      // window.localStorage.removeItem('userId')
+      console.log("userId - " + userId)
+    }
 
   }, [authToken, authTokenType, username])
 
@@ -139,7 +139,6 @@ function App() {
         alert(error);
       })
   }
-
 
   function performAction(event) {
     event?.preventDefault();
