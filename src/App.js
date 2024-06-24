@@ -14,28 +14,51 @@ function App() {
   const [authTokenType, setAuthTokenType] = useState(null);
   const [userId, setUserId] = useState('');
 
-  useEffect(() => {
-    setAuthToken(window.localStorage.getItem('authToken'));
-    setAuthTokenType(window.localStorage.getItem('authTokenType'))
-    setUsername(window.localStorage.getItem('username'))
-    setUserId(window.localStorage.getItem('userId'))
-  }, [])
+  console.log(userId);
+
+  // useEffect(() => {
+  //   setAuthToken(window.localStorage.getItem('authToken'));
+  //   setAuthTokenType(window.localStorage.getItem('authTokenType'))
+  //   setUsername(window.localStorage.getItem('username'))
+  //   setUserId(window.localStorage.getItem('userId'))
+  // }, [])
 
   useEffect(() => {
     authToken
       ? window.localStorage.setItem('authToken', authToken)
-      : window.localStorage.removeItem('authToken')
+      // ? console.log("authToken - " + authToken)
+      // : window.localStorage.removeItem('authToken')
+      : console.log("authToken - " + authToken)
+
+
     authTokenType
       ? window.localStorage.setItem('authTokenType', authTokenType)
-      : window.localStorage.removeItem('authTokenType')
+      // ? console.log("authTokenType - " + authTokenType)
+      // : window.localStorage.removeItem('authTokenType')
+      : console.log("authTokenType - " + authTokenType)
+
     username
       ? window.localStorage.setItem('username', username)
-      : window.localStorage.removeItem('username')
-    userId
-      ? window.localStorage.setItem('userId', userId)
-      : window.localStorage.removeItem('userId')
+      // ? console.log("username - " + username)
+      // : window.localStorage.removeItem('username')
+      : console.log("username - " + username)
 
-  }, [authToken, authTokenType, userId, username])
+    // userId
+    //   ? window.localStorage.setItem('userId', userId)
+    //   // ? console.log("userId - " + userId)
+    //   // : window.localStorage.removeItem('userId')
+    //   : console.log("userId - " + userId)
+
+      if (userId != null){
+        window.localStorage.setItem('userId', userId)
+        
+        console.log("userId - " + userId)
+      }else{
+        // window.localStorage.removeItem('userId')
+        console.log("userId - " + userId)
+      }
+
+  }, [authToken, authTokenType, username])
 
   function userLogin(event) {
     event?.preventDefault();
@@ -147,10 +170,12 @@ function App() {
         <form action="#" method="get">
 
           <label for="name">
-            name*
+            name
           </label>
           <input
             type="text"
+            name="nameOfUser"
+            id="nameOfUser"
             value={nameOfUser}
             onChange={(e) =>
               setNameOfUser(e.target.value)
@@ -161,7 +186,7 @@ function App() {
           />
 
           <label for="email">
-            email*
+            email
           </label>
           <input
             type="text"
@@ -177,7 +202,7 @@ function App() {
           />
 
           <label for="username">
-            Username*
+            Username
           </label>
           <input
             type="text"
@@ -192,7 +217,7 @@ function App() {
             required
           />
 
-          <label for="password">Password*</label>
+          <label for="password">Password</label>
           <input
             type="text"
             name="password"
@@ -211,6 +236,7 @@ function App() {
             Login
           </button>
 
+
           <button
             onClick={(e) => userSignUp(e)}
           >
@@ -222,6 +248,7 @@ function App() {
           >
             Signed In Activity
           </button>
+
 
         </form>
       </fieldset>
