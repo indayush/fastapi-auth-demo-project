@@ -12,15 +12,24 @@ function App() {
   const [email, setEmail] = useState("");
   const [authToken, setAuthToken] = useState(null)
   const [authTokenType, setAuthTokenType] = useState(null);
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
 
-  console.log(userId);
+  // console.log(userId);
 
   // useEffect(() => {
   //   setAuthToken(window.localStorage.getItem('authToken'));
   //   setAuthTokenType(window.localStorage.getItem('authTokenType'))
   //   setUsername(window.localStorage.getItem('username'))
   //   setUserId(window.localStorage.getItem('userId'))
+  // }, [])
+
+  // useEffect(() => {
+  //   const cookies = new Cookies();
+  //   cookies.get('authToken')
+  //   cookies.get('authTokenType')
+  //   cookies.get('username')
+  //   cookies.get('userId')
+
   // }, [])
 
   useEffect(() => {
@@ -143,7 +152,15 @@ function App() {
   function performAction(event) {
     event?.preventDefault();
 
-    fetch(BASE_URL + '/api/v1/users/')
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${authToken}`, // notice the Bearer before your token
+      }
+    }
+
+    fetch(BASE_URL + '/api/v1/users/', requestOptions)
       .then(response => {
         if (response.ok) {
           return response.json()
@@ -155,7 +172,7 @@ function App() {
       })
       .catch(error => {
         console.log(error);
-        alert(error)
+        // alert(error)
       })
   }
 
